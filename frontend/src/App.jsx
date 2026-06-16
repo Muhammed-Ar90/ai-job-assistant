@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import ResumeUpload from "./components/ResumeUpload"
 
 function App() {
-  const [status, setStatus] = useState(null)
+  const [resumeData, setResumeData] = useState(null)
 
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/test")
-      .then(res => res.json())
-      .then(data => setStatus(data))
-  }, [])
+  function handleUpload(data) {
+    setResumeData(data)
+  }
 
   return (
     <div>
       <h1>AI Job Search Assistant</h1>
-      {status ? (
-        <p>Backend connected! Phase: {status.phase}</p>
-      ) : (
-        <p>Connecting to backend...</p>
+      <ResumeUpload onUpload={handleUpload} />
+      {resumeData && (
+        <div>
+          <h3>Resume Uploaded Successfully!</h3>
+          <p>File: {resumeData.filename}</p>
+          <p>Word Count: {resumeData.word_count}</p>
+          <h4>Extracted Text:</h4>
+          <pre>{resumeData.text}</pre>
+        </div>
       )}
     </div>
   )
