@@ -2,6 +2,9 @@ import { useState } from "react"
 import ResumeUpload from "./components/ResumeUpload"
 import JobDescriptionAnalyzer from "./components/JobDescriptionAnalyzer"
 import MatchResults from "./components/MatchResults"
+import ResumeRewrite from "./components/ResumeRewrite"
+import CoverLetter from "./components/CoverLetter"
+import ResumeStrength from "./components/ResumeStrength"
 
 function App() {
   const [resumeData, setResumeData] = useState(null)
@@ -57,6 +60,9 @@ function App() {
       {resumeData && (
         <div>
           <h3>Resume Uploaded Successfully!</h3>
+          {resumeData && (
+            <ResumeStrength resumeText={resumeData.text} />
+          )}
           <p>File: {resumeData.filename}</p>
           <p>Word Count: {resumeData.word_count}</p>
         </div>
@@ -102,6 +108,20 @@ function App() {
       )}
 
       <MatchResults matchData={matchData} />
+
+      {matchData && resumeData && jdData && (
+        <ResumeRewrite
+          resumeText={resumeData.text}
+          missingSkills={matchData.missing_skills}
+          roleTitle={jdData.role_title}
+        />
+      )}
+      {resumeData && jdData && (
+        <CoverLetter
+          resumeText={resumeData.text}
+          jdAnalysis={jdData}
+        />
+    )}
     </div>
   )
 }

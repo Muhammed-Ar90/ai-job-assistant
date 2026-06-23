@@ -1,10 +1,9 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Dict, Any
+from typing import Dict, Any, List
 from parser import parse_resume
-from analyzer import analyze_job_description, match_resume_to_jd
-
+from analyzer import analyze_job_description, match_resume_to_jd, generate_resume_rewrite, generate_cover_letter, analyze_resume_strength
 app = FastAPI()
 
 app.add_middleware(
@@ -20,6 +19,18 @@ class JobDescription(BaseModel):
 class MatchRequest(BaseModel):
     resume_text: str
     jd_analysis: Dict[str, Any]
+
+class RewriteRequest(BaseModel):
+    resume_text: str
+    missing_skills: List[str]
+    role_title: str
+
+class CoverLetterRequest(BaseModel):
+    resume_text: str
+    jd_analysis: Dict[str, Any]
+
+class ResumeOnlyRequest(BaseModel):
+    resume_text: str
 
 @app.get("/")
 def home():
@@ -63,4 +74,31 @@ async def match(request: MatchRequest):
         raise HTTPException(status_code=400, detail="Job description analysis is required")
     
     result = match_resume_to_jd(request.resume_text, request.jd_analysis)
+    return result
+
+@app.post("/rewrite-resume")
+async def rewrite_resume(request: RewriteRequest):
+    if not request.missing_skills:
+        raise HTTPException(status_code=400, detail="No missing skills provided")
+    
+    result = generate_resume_rewrite(request.resume_text, request.missing_skills, request.role_title)
+    return result
+
+@app.post("/cover-letter")
+async def cover_letter(request: CoverLetterRequest):
+    if not request.resume_text.strip():
+        raise HTTPException(status_code=400, detail="Resume text cannot be empty")
+    
+    if not request.jd_analysis:
+        raise HTTPException(status_code=400, detail="Job description analysis is required")
+    
+    result = generate_cover_letter(request.resume_text, request.jd_analysis)
+    return result
+
+@app.post("/resume-strength")
+async def resume_strength(request: ResumeOnlyRequest):
+    if not request.resume_text.strip():
+        raise HTTPException(status_code=400, detail="Resume text cannot be empty")
+    
+    result = analyze_resume_strength(request.resume_text)
     return result
