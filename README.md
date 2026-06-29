@@ -145,15 +145,7 @@ FastAPI natively supports async operations (essential for AI API calls), has aut
 Avoids the need for user authentication while keeping data private per user. For a production version, I would add JWT-based authentication with a PostgreSQL database.
 
 **Prompt Engineering approach:**
-Used explicit JSON format templates, score range anchors, and self-verification instructions to get consistent structured outputs from an open-source LLM. Iterated through 5+ prompt versions to fix classification inconsistencies.
-
----
-
-## What I Learned
-
-- End-to-end full-stack development with React and FastAPI
-- Prompt engineering for reliable structured JSON outputs from LLMs
-- File parsing with PyMuPDF and python-docx
+Used explicit JSON format templates, score range anchors, and self-verification instructions to get consistent structured outputs from an open-source LLM.
 - Handling CORS, environment variables, and deployment across two platforms
 - Iterative debugging of AI outputs — testing, identifying failure patterns, and fixing prompts
 
@@ -170,7 +162,9 @@ Used explicit JSON format templates, score range anchors, and self-verification 
 
 ## Screenshots
 
-
+<img width="960" height="446" alt="ai-job1" src="https://github.com/user-attachments/assets/28c47454-8c8a-4666-8192-fa69d1950a48" />
+<img width="960" height="453" alt="ai-job2" src="https://github.com/user-attachments/assets/42d85059-7525-40d7-a074-7972afbb40e1" />
+<img width="960" height="457" alt="ai-job3" src="https://github.com/user-attachments/assets/4514eb78-eb0e-433c-8aca-d805036fdff5" />
 
 
 ---
