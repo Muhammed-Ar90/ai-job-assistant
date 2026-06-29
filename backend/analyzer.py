@@ -34,7 +34,7 @@ Return ONLY a JSON object. No explanation. No markdown. No code blocks. No extra
 
 Exactly this format:
 {{
-  "role_title": "the job title",
+  "role_title": " Extract the exact job title if explicitly stated. If no clear title is given, infer the most appropriate title from the responsibilities and required skills described.",
   "role_type": "Analyst/Engineer/Scientist/Other",
   "seniority": "Junior/Mid/Senior",
   "seniority_reasoning": "one short sentence explaining why this seniority was chosen",

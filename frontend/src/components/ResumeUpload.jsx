@@ -45,17 +45,43 @@ function ResumeUpload({ onUpload }) {
 
   return (
     <div>
-      <h2>Upload Your Resume</h2>
-      <input
-        type="file"
-        accept=".pdf,.docx"
-        onChange={handleFileChange}
-      />
-      <button onClick={handleUpload} disabled={loading}>
-        {loading ? "Uploading..." : "Upload Resume"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {file && <p>Selected: {file.name}</p>}
+      <label style={{
+        display: "block",
+        border: "1.5px dashed #CBD5E1",
+        borderRadius: "10px",
+        padding: "1.5rem",
+        textAlign: "center",
+        background: "#F8FAFC",
+        cursor: "pointer",
+        transition: "border-color 0.15s"
+      }}>
+        <div style={{ fontSize: "28px", marginBottom: "8px" }}>📄</div>
+        <div style={{ fontSize: "13px", fontWeight: "500", color: "#1E293B", marginBottom: "4px" }}>
+          {file ? file.name : "Click to browse or drop your resume"}
+        </div>
+        <div style={{ fontSize: "12px", color: "#94A3B8" }}>
+          PDF or DOCX supported
+        </div>
+        <input
+          type="file"
+          accept=".pdf,.docx"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+      </label>
+
+      {file && (
+        <button
+          className="primary"
+          onClick={handleUpload}
+          disabled={loading}
+          style={{ marginTop: "12px", width: "100%" }}
+        >
+          {loading ? "Uploading..." : "Upload Resume"}
+        </button>
+      )}
+
+      {error && <p className="error-text">{error}</p>}
     </div>
   )
 }

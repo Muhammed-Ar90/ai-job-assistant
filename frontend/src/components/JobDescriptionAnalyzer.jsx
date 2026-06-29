@@ -4,6 +4,7 @@ function JobDescriptionAnalyzer({ onAnalyze }) {
   const [jdText, setJdText] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [result, setResult] = useState(null)
 
   async function handleAnalyze() {
     if (!jdText.trim()) {
@@ -17,9 +18,7 @@ function JobDescriptionAnalyzer({ onAnalyze }) {
     try {
       const response = await fetch("http://127.0.0.1:8000/analyze-jd", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: jdText }),
       })
 
@@ -30,6 +29,7 @@ function JobDescriptionAnalyzer({ onAnalyze }) {
         return
       }
 
+      setResult(data)
       onAnalyze(data)
     } catch (err) {
       setError("Could not connect to server. Is FastAPI running?")
@@ -40,19 +40,70 @@ function JobDescriptionAnalyzer({ onAnalyze }) {
 
   return (
     <div>
-      <h2>Paste Job Description</h2>
       <textarea
-        rows={10}
-        cols={60}
+        rows={6}
         value={jdText}
         onChange={(e) => setJdText(e.target.value)}
         placeholder="Paste the job description here..."
+        style={{ marginBottom: "10px" }}
       />
-      <br />
-      <button onClick={handleAnalyze} disabled={loading}>
+
+      <button
+        className="primary"
+        onClick={handleAnalyze}
+        disabled={loading}
+        style={{ width: "100%" }}
+      >
         {loading ? "Analyzing..." : "Analyze Job Description"}
       </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {error && <p className="error-text">{error}</p>}
+
+      {result && (
+        <div style={{ marginTop: "1.25rem" }}>
+          <div style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px",
+            marginBottom: "1rem"
+          }}>
+            <span className="tag tag-blue" style={{ fontSize: "13px", padding: "4px 14px" }}>{result.role_title}</span>
+            <span className="tag" style={{ background: "#F1F5F9", color: "#475569", fontSize: "12px", padding: "3px 10px", borderRadius: "99px" }}>{result.role_type}</span>
+            <span className="tag" style={{ background: "#F1F5F9", color: "#475569", fontSize: "12px", padding: "3px 10px", borderRadius: "99px" }}>{result.seniority}</span>
+            <span className="tag" style={{ background: "#F1F5F9", color: "#475569", fontSize: "12px", padding: "3px 10px", borderRadius: "99px" }}>{result.experience_required}</span>
+          </div>
+
+          <div className="two-col">
+            <div>
+              <div className="col-label">Required skills</div>
+              <div className="tag-row">
+                {result.required_skills.map((skill, i) => (
+                  <span key={i} className="tag tag-blue">{skill}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="col-label">Important keywords</div>
+              <div className="tag-row">
+                {result.important_keywords.map((kw, i) => (
+                  <span key={i} className="tag tag-blue">{kw}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {result.seniority_reasoning && (
+            <p style={{
+              fontSize: "12px",
+              color: "#64748B",
+              marginTop: "10px",
+              fontStyle: "italic"
+            }}>
+              {result.seniority_reasoning}
+            </p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
