@@ -52,7 +52,7 @@ Job Description:
         messages=[
             {"role": "user", "content": prompt}
         ],
-        temperature=0.3
+        temperature=0.1
     )
 
     result_text = response.choices[0].message.content.strip()
@@ -90,6 +90,7 @@ SCORING RULES:
 - strengths: List skills/keywords that DO appear in the resume and match well.
 - keyword_density: For each important keyword, state how many times it appears in the resume (0 if absent).
 - seniority_match: Compare the candidate's apparent experience level (based on resume content) against the required seniority. State if they are Underqualified, Good Fit, or Overqualified, with a one-sentence reason.
+- Be consistent and decisive in your classifications. A skill is either present in the resume or it is not — do not classify the same skill as both a strength and a missing skill across different runs. If a skill appears anywhere in the resume text, classify it as a strength, not missing.
 
 Return ONLY a JSON object. No explanation. No markdown. No code blocks.
 
@@ -116,7 +117,7 @@ Exactly this format:
         messages=[
             {"role": "user", "content": prompt}
         ],
-        temperature=0.3
+        temperature=0.1
     )
 
     result_text = response.choices[0].message.content.strip()

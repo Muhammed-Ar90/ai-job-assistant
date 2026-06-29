@@ -5,6 +5,7 @@ import MatchResults from "./components/MatchResults"
 import ResumeRewrite from "./components/ResumeRewrite"
 import CoverLetter from "./components/CoverLetter"
 import ResumeStrength from "./components/ResumeStrength"
+import ApplicationTracker from "./components/ApplicationTracker"
 
 function App() {
   const [resumeData, setResumeData] = useState(null)
@@ -211,6 +212,17 @@ function App() {
         </div>
       )}
 
+       {/* Step 6 - Application Tracker */}
+      <div className="card">
+        <div className="card-header">
+          <div className="step-badge">6</div>
+          <span className="card-title">Application tracker</span>
+        </div>
+        <ApplicationTracker
+          matchData={matchData}
+          jdData={jdData}
+        />
+      </div>
     </div>
   )
 }
