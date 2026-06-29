@@ -6,9 +6,17 @@ from parser import parse_resume
 from analyzer import analyze_job_description, match_resume_to_jd, generate_resume_rewrite, generate_cover_letter, analyze_resume_strength
 app = FastAPI()
 
+from database import init_db
+init_db()
+
+import os
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        os.getenv("FRONTEND_URL", "*")
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
